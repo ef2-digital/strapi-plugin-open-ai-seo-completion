@@ -4,6 +4,8 @@ import pluginPkg from '../../package.json';
 import pluginId from './pluginId';
 import Initializer from './components/Initializer';
 import PluginIcon from './components/PluginIcon';
+import FieldPicker from "./components/RightLinksComponents/FieldPicker";
+import React from "react";
 
 const name = pluginPkg.strapi.name;
 
@@ -32,26 +34,7 @@ export default {
         Input: async () => import('./components/FieldComponents/Input'),
       },
       icon: PluginIcon,
-      options: {
-        base: [
-          {
-            sectionTitle: {
-              id: 'open-ai-seo-completion.options.context-selection',
-              defaultMessage: 'Context selection',
-            },
-            items: [ // Add settings items to the section
-              {
-                intlLabel: {
-                  id: 'open-ai-seo-completion.options.context-selection.label',
-                  defaultMessage: 'Content field key',
-                },
-                name: 'options.context-selection-field-key',
-                type: 'text'
-              }
-            ],
-          }
-        ]
-      },
+      options: {},
     });
 
     app.registerPlugin(plugin);
@@ -59,6 +42,10 @@ export default {
   },
 
   bootstrap(app: any) {
+    app.injectContentManagerComponent('editView', 'right-links', {
+      name: 'open-ai-seo-completion-page-settings',
+      Component: () => <FieldPicker/>,
+    });
   },
 
   async registerTrads(app: any) {
