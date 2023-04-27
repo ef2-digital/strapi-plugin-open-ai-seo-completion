@@ -1,33 +1,37 @@
-import React, {useState} from 'react';
-import {
-  Box,
-  Divider,
-  Field,
-  FieldLabel,
-  Select,
-  Option,
-  Stack,
-  Typography
-} from '@strapi/design-system';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
+import {Box, Divider, Field, Option, Select, Stack, Typography} from '@strapi/design-system';
 import {useCMEditViewDataManager} from '@strapi/helper-plugin';
 import {useIntl} from 'react-intl';
 import PluginId from "../../pluginId";
+import {useLocalStorage} from "usehooks-ts";
 
 const FieldPicker = () => {
-  const {modifiedData} = useCMEditViewDataManager();
+  const {modifiedData, allLayoutData} = useCMEditViewDataManager();
   const {formatMessage} = useIntl();
 
-  const [selectedField, setSelectedField] = useState('Content');
+  const datamanagerdata = useCMEditViewDataManager();
 
-  // const [error, setError] = useState('');
-
-  const [value, setValue] = useState();
+  const storageKey = `selected-seo-ai-field-${allLayoutData.contentType.uid}`;
+  const [selectedField, setSelectedField] = useLocalStorage<string | undefined>(storageKey, undefined);
   const [error, toggleError] = useState();
-  const [disabled, toggleDisabled] = useState();
 
   const handleChange = (value: string) => {
-    console.log('value', value);
+    setSelectedField(value);
   };
+
+  const richTextAttributes: any = Object.fromEntries(
+    Object.entries(allLayoutData?.contentType?.attributes)
+      .filter(([key, value]: any) => {
+        return value['type'] === 'richtext';
+      })
+  );
+
+  useLayoutEffect(() => {
+    // console.log('checks', selectedField, richTextAttributes);
+    if (!selectedField && Object.keys(richTextAttributes)) {
+      setSelectedField(Object.keys(richTextAttributes)[0]);
+    }
+  });
 
   if (modifiedData.hasOwnProperty('seo')) {
     return (
@@ -58,13 +62,14 @@ const FieldPicker = () => {
                         placeholder="Pick content field"
                         hint="Choose from the available fields in this form"
                         onClear={() => {
-                          // setSelectedField('');
+                          setSelectedField(undefined);
                         }}
                         onChange={handleChange}
                         error={error}
                         value={selectedField}>
-                  <Option value="Content">Content</Option>
-                  <Option value="Other">Other field</Option>
+                  {richTextAttributes && Object.keys(richTextAttributes).map((field: string) => {
+                    return <Option value={field} key={field}>{field}</Option>
+                  })}
                 </Select>
               </Stack>
             </Field>
