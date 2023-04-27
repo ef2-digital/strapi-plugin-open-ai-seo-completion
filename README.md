@@ -17,19 +17,12 @@ yarn add @ef2/strapi-plugin-open-ai-seo-completion
 Enable the plugin in `./config/plugins.js` by adding the following:
 
 ```js
-'open-ai-seo-completion'
-:
-{
+'open-ai-seo-completion': {
   enabled: true,
-    resolve
-:
-  './src/plugins/open-ai-seo-completion',
-    config
-:
-  {
-    apiToken: process.env.OPEN_AI_API_TOKEN,
-  }
-,
+    resolve: './src/plugins/open-ai-seo-completion',
+    config: {
+        apiToken: process.env.OPEN_AI_API_TOKEN
+    }
 }
 ```
 
@@ -41,4 +34,4 @@ OPEN_AI_API_TOKEN=your-api-token
 
 ## Usage
 
-Coming soon
+Coming soon...
