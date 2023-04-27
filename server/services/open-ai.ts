@@ -4,9 +4,9 @@ import axios from 'axios';
 
 export default ({strapi}) => ({
 
-  async generateSeoInfo(content: string) {
+  async generateSeoInfo(content: string, locale: string) {
     try {
-      const prompt = `Give a metadescription in dutch for this content: ${content}`;
+      const prompt = `Give a metadescription in this language: ${locale}, for this content: ${content}`;
 
       const response = await axios(
         {

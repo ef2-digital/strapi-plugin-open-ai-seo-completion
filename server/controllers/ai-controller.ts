@@ -5,7 +5,7 @@ const AiController = ({strapi}) => ({
     ctx.body = await strapi
       .plugin('open-ai-seo-completion')
       .service('openAi')
-      .generateSeoInfo(ctx.request.body.content);
+      .generateSeoInfo(ctx.request.body.content, ctx.request.body.locale);
   },
 });
 

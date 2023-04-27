@@ -3,6 +3,7 @@ import {Button, Field, FieldError, FieldHint, FieldInput, FieldLabel, Stack} fro
 import {auth, useCMEditViewDataManager} from "@strapi/helper-plugin";
 import {useIntl} from "react-intl";
 import {Magic} from "@strapi/icons";
+import {useReadLocalStorage} from "usehooks-ts";
 
 // @ts-ignore
 
@@ -31,7 +32,7 @@ const Input = ({
                }: InputProps) => {
   const {formatMessage} = useIntl();
 
-  const {modifiedData} = useCMEditViewDataManager();
+  const {modifiedData, allLayoutData} = useCMEditViewDataManager();
 
   const [metaDescription, setMetaDescription] = useState(value);
 
@@ -39,7 +40,7 @@ const Input = ({
 
   const generateButtonText = isGenerating ? 'Generating...' : 'Generate';
 
-  const contextFieldKey = attribute.options['context-selection-field-key'];
+  const contextFieldKey: string | null = useReadLocalStorage(`selected-seo-ai-field-${allLayoutData.contentType.uid}`);
 
   useEffect(() => {
     console.log('Set warning if content is edited, so user can generate new metadescription', modifiedData);
@@ -47,11 +48,15 @@ const Input = ({
 
   const handleChange = (value: string) => {
     setMetaDescription(value);
-
     onChange({target: {name, value: metaDescription, type: attribute.type}});
   };
 
   const handleGenerateClick = async () => {
+    if (!contextFieldKey || !modifiedData[contextFieldKey]) {
+      console.log('No content to generate meta description from');
+      return;
+    }
+
     setIsGenerating(true);
     const response = await fetch(`/open-ai-seo-completion/generate-seo-information`, {
       method: 'POST',
@@ -60,7 +65,8 @@ const Input = ({
         'Authorization': `Bearer ${auth.getToken()}`
       },
       body: JSON.stringify({
-        'content': modifiedData[contextFieldKey]
+        'content': modifiedData[contextFieldKey],
+        'locale': modifiedData.locale,
       })
     });
 

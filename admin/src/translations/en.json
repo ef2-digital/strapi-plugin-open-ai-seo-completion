@@ -1,1 +1,6 @@
-{}
+{
+  "plugin.name": "OpenAI SEO Completion",
+  "plugin.description": "OpenAI SEO Completion for generating SEO information in the content editor",
+  "open-ai-seo-completion.field-picker.description": "Select the field with the main content of the page",
+  "open-ai-seo-completion.field-picker.placeholder": "Select a field"
+}

@@ -4,12 +4,11 @@ import {useCMEditViewDataManager} from '@strapi/helper-plugin';
 import {useIntl} from 'react-intl';
 import PluginId from "../../pluginId";
 import {useLocalStorage} from "usehooks-ts";
+import getTrad from "../../utils/getTrad";
 
 const FieldPicker = () => {
   const {modifiedData, allLayoutData} = useCMEditViewDataManager();
   const {formatMessage} = useIntl();
-
-  const datamanagerdata = useCMEditViewDataManager();
 
   const storageKey = `selected-seo-ai-field-${allLayoutData.contentType.uid}`;
   const [selectedField, setSelectedField] = useLocalStorage<string | undefined>(storageKey, undefined);
@@ -27,7 +26,6 @@ const FieldPicker = () => {
   );
 
   useLayoutEffect(() => {
-    // console.log('checks', selectedField, richTextAttributes);
     if (!selectedField && Object.keys(richTextAttributes)) {
       setSelectedField(Object.keys(richTextAttributes)[0]);
     }
@@ -52,15 +50,22 @@ const FieldPicker = () => {
               defaultMessage: 'Open AI SEO Completion'
             })}
           </Typography>
-          <Box paddingTop={2} paddingBottom={6}>
+          <Box paddingTop={2} paddingBottom={4}>
             <Divider/>
           </Box>
-          <Box paddingTop={1}>
+          <Box>
             <Field>
               <Stack spacing={2}>
-                <Select label="Content field"
-                        placeholder="Pick content field"
-                        hint="Choose from the available fields in this form"
+                <Typography variant="omega" textColor="neutral600">
+                  {formatMessage({
+                    id: getTrad('open-ai-seo-completion.field-picker.description'),
+                    defaultMessage: 'Select the content field.',
+                  })}
+                </Typography>
+                <Select placeholder={formatMessage({
+                  id: getTrad('open-ai-seo-completion.field-picker.placeholder'),
+                  defaultMessage: 'Select a field',
+                })}
                         onClear={() => {
                           setSelectedField(undefined);
                         }}
