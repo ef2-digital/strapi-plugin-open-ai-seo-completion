@@ -1,6 +1,6 @@
 {
   "name": "@ef2/strapi-open-ai-seo-completion",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Open AI integration for the Strapi SEO plugin",
   "strapi": {
     "name": "open-ai-seo-completion",
