@@ -9,14 +9,5 @@ exports.default = [
             auth: false,
             policies: [],
         },
-    },
-    {
-        method: 'GET',
-        path: '/info',
-        handler: 'AiController.getInfo',
-        config: {
-            auth: false,
-            policies: [],
-        },
     }
 ];

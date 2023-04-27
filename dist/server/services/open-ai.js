@@ -5,9 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 exports.default = ({ strapi }) => ({
-    async generateSeoInfo(content) {
+    async generateSeoInfo(content, locale) {
         try {
-            const prompt = `Give a metadescription in dutch for this content: ${content}`;
+            const prompt = `Give a metadescription in this language: ${locale}, for this content: ${content}`;
             const response = await (0, axios_1.default)({
                 url: 'https://api.openai.com/v1/completions',
                 method: 'POST',
