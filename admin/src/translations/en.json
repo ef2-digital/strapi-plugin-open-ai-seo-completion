@@ -1,6 +1,13 @@
 {
   "plugin.name": "OpenAI SEO Completion",
   "plugin.description": "OpenAI SEO Completion for generating SEO information in the content editor",
+  "open-ai-seo-completion.custom-field.label": "AI SEO input",
+  "open-ai-seo-completion.custom-field.description": "SEO info field with Open AI completion",
   "open-ai-seo-completion.field-picker.description": "Select the field with the main content of the page",
-  "open-ai-seo-completion.field-picker.placeholder": "Select a field"
+  "open-ai-seo-completion.field-picker.placeholder": "Select a field",
+  "open-ai-seo-completion.options.type.label": "Type SEO information",
+  "open-ai-seo-completion.options.type.description.label": "Description",
+  "open-ai-seo-completion.options.type.title.label": "Title",
+  "open-ai-seo-completion.errors.no-context-field.title": "SEO information cannot be generated",
+  "open-ai-seo-completion.errors.no-context-field.description": "There is no content field selected, so no SEO information can be generated. Make sure there is a minimum of one 'rich text' field selected in the field picker on the right side of this page."
 }

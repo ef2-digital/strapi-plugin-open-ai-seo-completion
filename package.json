@@ -7,6 +7,14 @@
     "description": "Open AI integration for the Strapi SEO plugin to generate SEO information based on the content of the page.",
     "kind": "plugin"
   },
+  "keywords": [
+    "strapi",
+    "strapi-plugin",
+    "seo",
+    "open-ai",
+    "openai",
+    "ChatGPT"
+  ],
   "dependencies": {
     "@strapi/design-system": "^1.6.3",
     "@strapi/helper-plugin": "^4.6.0",

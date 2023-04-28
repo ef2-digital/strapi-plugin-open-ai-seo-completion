@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Field, FieldError, FieldHint, FieldInput, FieldLabel, Stack} from '@strapi/design-system';
-import {auth, useCMEditViewDataManager} from "@strapi/helper-plugin";
+import {auth, useCMEditViewDataManager, useNotification} from "@strapi/helper-plugin";
 import {useIntl} from "react-intl";
 import {Magic} from "@strapi/icons";
 import {useReadLocalStorage} from "usehooks-ts";
+import {SeoInfoType} from "../../../../server/services/open-ai";
 
 // @ts-ignore
 
@@ -32,9 +33,11 @@ const Input = ({
                }: InputProps) => {
   const {formatMessage} = useIntl();
 
+  const toggleNotification = useNotification();
+
   const {modifiedData, allLayoutData} = useCMEditViewDataManager();
 
-  const [metaDescription, setMetaDescription] = useState(value);
+  const [seoInformation, setSeoInformation] = useState(value);
 
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -42,18 +45,30 @@ const Input = ({
 
   const contextFieldKey: string | null = useReadLocalStorage(`selected-seo-ai-field-${allLayoutData.contentType.uid}`);
 
+  const seoInfoType: SeoInfoType = attribute.options['seo-info-type'] || SeoInfoType.description;
+
   useEffect(() => {
     console.log('Set warning if content is edited, so user can generate new metadescription', modifiedData);
   }, [modifiedData]);
 
   const handleChange = (value: string) => {
-    setMetaDescription(value);
-    onChange({target: {name, value: metaDescription, type: attribute.type}});
+    setSeoInformation(value);
+    onChange({target: {name, value: seoInformation, type: attribute.type}});
   };
 
   const handleGenerateClick = async () => {
     if (!contextFieldKey || !modifiedData[contextFieldKey]) {
-      console.log('No content to generate meta description from');
+      toggleNotification({
+        type: 'warning',
+        title: {
+          id: 'open-ai-seo-completion.errors.no-context-field.title',
+          defaultMessage: 'No content to generate SEO information from',
+        },
+        message: {
+          id: 'open-ai-seo-completion.errors.no-context-field.description',
+          defaultMessage: 'There is no content field selected, so no SEO information can be generated. Make sure there is a minimum of one \'rich text\' field selected in the field picker on the right side of this page.',
+        }
+      });
       return;
     }
 
@@ -67,6 +82,7 @@ const Input = ({
       body: JSON.stringify({
         'content': modifiedData[contextFieldKey],
         'locale': modifiedData.locale,
+        'type': seoInfoType
       })
     });
 
@@ -77,7 +93,7 @@ const Input = ({
     const result = await response.json();
     const parsedResult = result.choices[0].text.replace(/(?:\r\n|\r|\n)/g, '');
 
-    setMetaDescription(parsedResult);
+    setSeoInformation(parsedResult);
     setIsGenerating(false);
 
     onChange({target: {name, value: parsedResult, type: attribute.type}});
@@ -89,8 +105,9 @@ const Input = ({
         <FieldLabel action={labelAction}>{formatMessage(intlLabel)}</FieldLabel>
 
         <FieldInput
-          id="meta-description-ai"
-          value={metaDescription}
+          id={`seo-ai-${seoInfoType}-input}`}
+          value={seoInformation}
+          required={required}
           minLength={50}
           maxLength={160}
           disabled={isGenerating}
@@ -100,7 +117,7 @@ const Input = ({
         <FieldError/>
 
         <Stack horizontal spacing={2}>
-          <Button startIcon={<Magic/>} onClick={handleGenerateClick}>
+          <Button startIcon={<Magic/>} onClick={handleGenerateClick} variant="secondary">
             {generateButtonText}
           </Button>
         </Stack>

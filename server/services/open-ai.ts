@@ -2,11 +2,19 @@
 
 import axios from 'axios';
 
-export default ({strapi}) => ({
+export default ({strapi}: any) => ({
 
-  async generateSeoInfo(content: string, locale: string) {
+  async generateSeoInfo(content: string, locale: string, type: SeoInfoType) {
     try {
-      const prompt = `Give a metadescription in this language: ${locale}, for this content: ${content}`;
+      let prompt;
+      switch (type) {
+        case SeoInfoType.description:
+          prompt = `Give the meta description without a label in this language ${locale}, for the following content. ${content}`;
+          break;
+        case SeoInfoType.title:
+          prompt = `Give the meta title without a label in this language ${locale}, for the following content. ${content}`;
+          break;
+      }
 
       const response = await axios(
         {
@@ -28,10 +36,13 @@ export default ({strapi}) => ({
         })
 
       return response.data;
-    } catch (err) {
+    } catch (err: any) {
       console.log(err.response)
     }
-
   }
-
 });
+
+export enum SeoInfoType {
+  description = 'description',
+  title = 'title',
+}

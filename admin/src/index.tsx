@@ -19,22 +19,66 @@ export default {
     };
 
     app.customFields.register({
-      name: 'meta-description',
+      name: 'seo-ai-input',
       pluginId: 'open-ai-seo-completion',
       type: 'string',
       intlLabel: {
-        id: 'open-ai-seo-completion.meta-description.label',
-        defaultMessage: 'Meta Description with AI completion'
+        id: 'open-ai-seo-completion.custom-field.label',
+        defaultMessage: 'SEO field with AI completion'
       },
       intlDescription: {
-        id: 'open-ai-seo-completion.meta-description.description',
-        defaultMessage: 'Meta Description with Open AI completion'
+        id: 'open-ai-seo-completion.custom-field.description',
+        defaultMessage: 'SEO info field with Open AI completion'
       },
       components: {
         Input: async () => import('./components/FieldComponents/Input'),
       },
       icon: PluginIcon,
-      options: {},
+      options: {
+        base: [
+          {
+            sectionTitle: {
+              id: 'open-ai-seo-completion.options.type.title',
+              defaultMessage: 'Type SEO information',
+            },
+            items: [ // Add settings items to the section
+              {
+                name: 'options.seo-info-type',
+                intlLabel: {
+                  id: 'open-ai-seo-completion.options.type.label',
+                  defaultMessage: 'Type SEO information',
+                },
+                type: 'select',
+                value: 'description',
+                options: [
+                  {
+                    key: 'description',
+                    value: 'description',
+                    defaultValue: 'description',
+                    metadatas: {
+                      intlLabel: {
+                        id: 'open-ai-seo-completion.options.type.description.label',
+                        defaultMessage: 'Description',
+                      },
+                    },
+                  },
+                  {
+                    key: 'title',
+                    value: 'title',
+                    defaultValue: 'title',
+                    metadatas: {
+                      intlLabel: {
+                        id: 'open-ai-seo-completion.options.type.title.label',
+                        defaultMessage: 'Title',
+                      },
+                    },
+                  },
+                ],
+              }
+            ],
+          }
+        ]
+      },
     });
 
     app.registerPlugin(plugin);
