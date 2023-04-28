@@ -42,8 +42,8 @@ OPEN_AI_API_TOKEN=your-api-token
 
 ## Screenshots
 
-![Custom field](screenshots/content-seo-custom-fields.png "Custom field")
-![Content field picker](screenshots/content-seo-content-field-picker.png "Content field picker")
-![Custom field in content type editor](screenshots/content-type-editor-custom-fields.png "Custom field in content type editor")
-![Custom field in content type editor 2](screenshots/content-type-editor-custom-fields-2.png "Custom field in content type editor 2")
+![Custom field](./screenshots/content-seo-custom-fields.png "Custom field")
+![Content field picker](./screenshots/content-seo-content-field-picker.png "Content field picker")
+![Custom field in content type editor](./screenshots/content-type-editor-custom-fields.png "Custom field in content type editor")
+![Custom field in content type editor 2](./screenshots/content-type-editor-custom-fields-2.png "Custom field in content type editor 2")
 
