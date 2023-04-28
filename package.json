@@ -29,5 +29,9 @@
     "type": "git",
     "url": "https://github.com/ef2-digital/strapi-plugin-open-ai-seo-completion.git"
   },
+  "scripts": {
+    "develop": "tsc -p tsconfig.server.json -w",
+    "build": "tsc -p tsconfig.server.json"
+  },
   "license": "MIT"
 }
